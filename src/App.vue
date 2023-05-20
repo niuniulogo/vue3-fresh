@@ -4,6 +4,7 @@
     transition: all 0.3s ease;
 }
 
+
 .v-leave-active {
     transition: all 0.3s ease;
 }
