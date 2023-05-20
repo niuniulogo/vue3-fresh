@@ -23,9 +23,7 @@
 }
 </style>
 <template>
-    <!-- todo 添加过渡动画 -->
-
-
+    <!--  添加过渡动画 -->
     <router-view v-slot="{ Component }">
         <transition>
             <component :is="Component" />
