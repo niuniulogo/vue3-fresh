@@ -1,4 +1,4 @@
-# vue3版本  生鲜超市  该项目用于学习 vue3 + Ts
+## vue3版本  生鲜超市  该项目用于学习 vue3 + Ts
 
 This template should help get you started developing with Vue 3 in Vite.
 

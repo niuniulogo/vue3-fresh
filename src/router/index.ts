@@ -6,6 +6,7 @@ const router = createRouter({
             path:'/',
             component: () => import('@/views/tabbar-view.vue'),
             redirect:'/home',
+            meta: {routeDeep:0},
             children:[
                 {
                     path: '/home',
@@ -15,30 +16,48 @@ const router = createRouter({
                 {
                     path: '/sorts',
                     name: 'sorts',
-                    meta: {},
+                    
                     component: () => import('@/views/SortsView/sortsView.vue')
                 },
                 {
                     path: '/shopCar',
                     name: 'shopCar',
-                    meta: {},
+                
                     component: () => import('@/views/ShopCarView/shopCarView.vue')
                 },
                 {
                     path: '/my',
                     name: 'my',
-                    meta: {},
+                  
                     component: () => import('@/views/MyView/myView.vue')
                 }
             ]
         },
         {
+            path:"/searchView",
+            name: 'searchView',
+            meta: {routeDeep:1},
+            component: () => import('@/views/HomeView/searchView.vue')
+        },
+        {
             path:"/mySon",
             name: 'mySon',
+            meta: {routeDeep:2},
             component: () => import('@/views/MyView/mySonView.vue')
         }
         
     ]
 })
+
+
+router.afterEach((to, from) => {
+
+console.log(to,from);
+
+    //动态设置 路由过渡动画方式
+    const toDepth = to.meta.routeDeep
+    const fromDepth = from.meta.routeDeep
+    to.meta.transition = toDepth < fromDepth ? 'slide-right' : 'slide-left'
+  })
 
 export default router
