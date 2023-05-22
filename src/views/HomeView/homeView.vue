@@ -120,10 +120,24 @@
         height: 128px;
     }
 }
+
+.list {
+    margin: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+
+    .list-item {
+        width: 48%;
+        margin-bottom: 10px;
+        height: 250px;
+        text-align: center;
+    }
+}
 </style>
 
 <template>
-    <header style="position: fixed;z-index: 99;width: 100vw;">
+    <header style="top: 0; position: fixed;z-index: 99;width: 100vw;">
         <van-search shape="round" background="#40AE36" readonly placeholder="吃出美好生活" @click-input="onClick">
             <template #left>
                 <div style="color: white; margin-left: 5px; margin-right: 20px;">郑州 </div>
@@ -181,14 +195,26 @@
                 <img class="image" src="@/assets/产地量贩.png" alt="">
             </div>
 
-            <van-tabs v-model:active="active" sticky swipeable offset-top="55" title-active-color="#40AE36" color="#40AE36">
-                <van-tab v-for=" (item, index) in dataList2" :title="item.title + '/' + item.subTitle" :key="index">
-                    <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-                        <div v-for="item in list" :key="item" style="height: 30px;"> {{ item }}</div>
-                    </van-list>
-                </van-tab>
-            </van-tabs>
+            <!-- 时令 当季 tab栏 -->
+            <van-sticky :offset-top="50">
+                <van-tabs v-model:active="active">
+                    <van-tab style="height: 100px;" v-for="(item, index) in dataList2" :key="index"
+                        :title="item.title"></van-tab>
+                </van-tabs>
+            </van-sticky>
 
+
+
+            <van-list class="list" v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+                <div class="list-item" v-for="(item, index) in list" :key="index">
+
+                    <van-image width="100%" height="250" fit="fill" lazy-load :src="item">
+                        <template v-slot:loading>
+                            <van-loading type="spinner" size="20" />
+                        </template>
+                    </van-image>
+                </div>
+            </van-list>
 
 
         </div>
@@ -196,10 +222,8 @@
 </template>
 
 <script setup lang="ts">
-import type { Ref } from "vue";
 import { ref } from "vue"
-import { useRouter, useRoute } from 'vue-router'
-const route = useRoute();
+import { useRouter } from 'vue-router'
 const router = useRouter();
 
 
@@ -257,11 +281,10 @@ const onLoad = () => {
             refreshing.value = false;
         }
 
-        for (let i = 0; i < 10; i++) {
-            list.value.push(list.value.length + 1);
+        for (let i = 0; i < 6; i++) {
+            list.value.push('src/assets/list-item-' + (i + 1) + '.png');
         }
         loading.value = false;
-        console.log(list.value, "00");
 
         if (list.value.length >= 40) {
             finished.value = true;

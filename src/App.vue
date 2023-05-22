@@ -67,14 +67,17 @@
     <!--  添加过渡动画 -->
     <router-view v-slot="{ Component, route }">
         <transition :name="route.meta.transition as string || 'slide-left'" appear>
-            <component :is="Component" />
+            <keep-alive :max="10">
+                <component :is="Component" />
+            </keep-alive>
         </transition>
     </router-view>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { provide } from 'vue';
+import EventEmitter from './utils/EventEmitter';
 
-onMounted
+provide("eventBus1", new EventEmitter());  //定义事件总线
 
 </script>

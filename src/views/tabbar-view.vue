@@ -16,12 +16,19 @@
 </style>
 
 <template>
-    <div class="main">
-        <RouterView />
+    <div ref="scrollRef" class="main">
+        <router-view v-slot="{ Component }">
+            <keep-alive :max="10">
+                <component :is="Component" />
+            </keep-alive>
+        </router-view>
+
+        <van-back-top v-if="isShowBackTop" target=".main" bottom="15vh" />
     </div>
 
 
-    <van-tabbar class="tabbar_footer" v-show="isShowTabbar" v-model="active" @change="onChange" active-color="#40AE36">
+    <van-tabbar class="tabbar_footer" v-model="active" @change="onChange" :before-change="onBeforeChange"
+        active-color="#40AE36">
         <van-tabbar-item replace to="/home" name="home">
             <template #icon="props">
                 <svg v-if="props.active" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -158,12 +165,74 @@
 </template>
 
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
-import { ref } from 'vue';
-import { showToast } from 'vant';
+import { RouterView, onBeforeRouteLeave, useRouter } from 'vue-router'
+import { ref, reactive, nextTick, inject } from "vue";
+import { onActivated } from 'vue';
 
+
+const router = useRouter();
+
+const scrollRef = ref<null | HTMLInputElement>(null)
 const active = ref('home');
-const isShowTabbar = ref(true);
-const onChange = (index: any) => showToast(`点击了 ${index}`);
+
+const isShowBackTop = ref(false);
+isShowBackTop.value = true;
+//记录上一次各个页面的滚动距离
+const tabScrollTop: any = reactive({
+    'home': 0,
+    'sorts': 0,
+    'shopCar': 0,
+    'my': 0
+});
+
+
+
+const bus1: any = inject("eventBus1")
+bus1.on("swichTab", (tabName: string) => {
+    console.log('eventBus1 on event emit!')
+    active.value = tabName;
+    router.push({ name: tabName, replace: true })
+})
+
+
+onActivated(() => {
+    nextTick(() => {
+        isShowBackTop.value = true
+        setScrollTop()
+    })
+})
+onBeforeRouteLeave((to, from, next) => {
+    getScrollTop()
+    isShowBackTop.value = false
+    next()
+})
+
+
+
+
+// tab 切换
+const onChange = () => {
+    setTimeout(() => {
+        setScrollTop()
+    }, 0);
+}
+const onBeforeChange = () => {
+    getScrollTop()
+    return true;
+};
+
+
+const setScrollTop = () => {
+
+    scrollRef!.value!.scrollTop = tabScrollTop[active.value];
+}
+
+const getScrollTop = () => {
+
+
+    tabScrollTop[active.value] = scrollRef?.value?.scrollTop
+}
+
+
 
 </script>

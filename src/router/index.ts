@@ -52,7 +52,7 @@ const router = createRouter({
 
 router.afterEach((to, from) => {
 
-console.log(to,from);
+// console.log(to,from);
 
     //动态设置 路由过渡动画方式
     const toDepth = to.meta.routeDeep
