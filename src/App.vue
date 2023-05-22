@@ -1,4 +1,3 @@
-
 <style>
 /* 路由切换动画 */
 /* slide-left-transform */
@@ -10,7 +9,6 @@
     position: fixed;
     left: 0;
     top: 0;
-
 }
 
 /* 可能为enter失效，拆分为 enter-from和enter-to */
@@ -25,13 +23,10 @@
     width: 100vw;
 }
 
-
 .slide-left-leave-to {
     opacity: 1;
     transform: translateX(-100%);
-
 }
-
 
 .slide-right-leave-active,
 .slide-right-enter-active {
@@ -41,7 +36,6 @@
     position: fixed;
     left: 0;
     top: 0;
-
 }
 
 /* 可能为enter失效，拆分为 enter-from和enter-to */
@@ -56,11 +50,9 @@
     width: 100vw;
 }
 
-
 .slide-right-leave-to {
     opacity: 1;
     transform: translateX(100%);
-
 }
 </style>
 <template>
@@ -75,9 +67,8 @@
 </template>
 
 <script setup lang="ts">
-import { provide } from 'vue';
-import EventEmitter from './utils/EventEmitter';
+import { provide } from 'vue'
+import EventEmitter from './utils/EventEmitter'
 
-provide("eventBus1", new EventEmitter());  //定义事件总线
-
+provide('eventBus1', new EventEmitter()) //定义事件总线
 </script>
