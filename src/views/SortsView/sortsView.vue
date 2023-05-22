@@ -57,7 +57,7 @@
 
     <div class="sorts-body">
         <div class="left">
-            <van-sidebar @click="onClick" class="left-item" v-model="activeIndex" @change="onChange">
+            <van-sidebar @click="onClick" class="left-item" v-model="activeIndex">
                 <van-sidebar-item v-for="(item, index) in dataList1" :id="'li' + index" :key="index" :title="item.title" />
             </van-sidebar>
         </div>
@@ -81,13 +81,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, inject, onMounted, nextTick, type Ref } from 'vue'
-import { showToast } from 'vant'
+import { ref, inject, onMounted, type Ref } from 'vue'
 import type EventEmitter from '@/utils/EventEmitter';
 import { onActivated } from 'vue';
 
 const activeIndex = ref(0); //记录点击标签名
-const onChange = (index: number) => { }
 
 const dataList1 = ref([
     { title: '好货推荐', id: 1 },
@@ -105,10 +103,7 @@ const dataList1 = ref([
     { title: '生抽老抽', id: 13 },
     { title: '火锅底料', id: 14 },
 ]);
-const scrooll = (e: any) => {
-    console.log(e.target.scrollTop);
 
-};
 
 
 const list: Ref<number[]> = ref([]);
